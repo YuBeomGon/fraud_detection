@@ -87,14 +87,14 @@ def build_dataset(config) :
     
     return train_loader, val_loader, test_loader
     
-def build_model(config) :
-    if config.arch == 'ae_basic' :
+def build_model(arch) :
+    if arch == 'ae_basic' :
         return AutoEncoder()
-    elif config.arch == 'ae_denoising' :
+    elif arch == 'ae_denoising' :
         return DenoisingAE()
-    elif config.arch == 'ae_tied' :
+    elif arch == 'ae_tied' :
         return TiedAE()
-    elif config.arch == 'ae_stacked' :
+    elif arch == 'ae_stacked' :
         return StackedAE()
     else :
         print('please select the model architecture')
@@ -161,7 +161,7 @@ class Trainer() :
             if best_score < score :
                 best_score = score
                 # torch.save(self.model.state_dict(), '../saved1/model_epoch-{}-f1-{:.3f}.pt'.format(epoch, best_score))
-                torch.save(self.model.state_dict(), './saved1/best_model.pth')
+                torch.save(self.model.state_dict(), './saved1/' + config.arch + '/best_model.pth')
             
     def validation(self, eval_model, threshold) :
         cos = nn.CosineSimilarity(dim=1, eps=1e-6)
@@ -191,7 +191,7 @@ def main(config) :
     seed_everything(config.seed)    
     
     train_loader, val_loader, test_loader = build_dataset(config)
-    model = build_model(config)
+    model = build_model(config.arch)
     model.eval()
     
     optimizer = build_optimizer(model, config)
@@ -211,7 +211,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     now = datetime.now().strftime('%Y%m%d_%H%M%S')
     
-    wandb.init(project='Credit Card Fraud Detection Landscape',  name=now, mode='online')
+    wandb.init(project='Credit Card Fraud Detection',  name=now, mode='online')
     wandb.watch_called = False
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
