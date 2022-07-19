@@ -1,4 +1,8 @@
 saved/*
+.ipynb_checkpoints/*
+__pycache__/*
+saved1/*
 dataset/*
 */wandb/*
+wandb/*
 */.ipynb_checkpoints/*
