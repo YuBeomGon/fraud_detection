@@ -27,7 +27,7 @@ from tqdm import tqdm
 from sklearn.metrics import f1_score, classification_report
 
 from dataset import CDataset
-from models import AutoEncoder
+from models import AutoEncoder, TiedAE, StackedAE
 
 parser = argparse.ArgumentParser(description='Credit Card Fraud Detection')
 parser.add_argument('--data_path', metavar='DIR', default='./dataset/',
