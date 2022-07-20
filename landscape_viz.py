@@ -51,14 +51,14 @@ def run_landscape_gen(config):
         print(f'Testing {model_id}')
         config.arch = model_id
         model = build_model(config.arch)
-        model.eval()        
+        model.eval() 
 
         if os.path.exists(f'results/{model_id}_contour_bs_{config.batch_size}_res_{config.resolution}_.png'):
             continue
 
         noises = init_directions(load_model(model, config))
 
-        criterion = nn.L1Loss().to(config.device)
+        criterion = nn.L1Loss()
 
         A, B = np.meshgrid(np.linspace(-1, 1, config.resolution),
                         np.linspace(-1, 1, config.resolution), indexing='ij')
@@ -71,10 +71,10 @@ def run_landscape_gen(config):
                 n_batch = 0
                 alpha = A[i, j]
                 beta = B[i, j]
-                net = init_network(load_model(model, config), noises, alpha, beta).to(config.device)
+                net = init_network(load_model(model, config), noises, alpha, beta).to('cuda')
                 for batch, label in iter(val_loader):
-                    batch = batch.to(config.device)
-                    label = label.to(config.device)
+                    batch = batch.to('cuda')
+                    label = label.to('cuda')
                     with torch.no_grad():
                         preds = net(batch)
                         loss = criterion(batch, preds)

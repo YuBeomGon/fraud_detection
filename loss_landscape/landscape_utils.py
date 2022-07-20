@@ -35,14 +35,10 @@ def init_directions(model):
 
 
 def init_network(model, all_noises, alpha, beta):
+    model = model.to('cpu')
     with torch.no_grad():
         for param, noises in zip(model.parameters(), all_noises):
             delta, nu = noises
-            print('delta', delta.device)
-            print('nu', nu.device)
-            print(alpha)
-            print(beta)
-            print('param', param.device)
             new_value = param + alpha * delta + beta * nu
             param.copy_(new_value)
     return model
