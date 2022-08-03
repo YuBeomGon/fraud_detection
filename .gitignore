@@ -1,8 +1,12 @@
 saved/*
 .ipynb_checkpoints/*
 __pycache__/*
+*/__pycache__/*
 saved1/*
 dataset/*
+kaggle_dataset/*
 */wandb/*
 wandb/*
 */.ipynb_checkpoints/*
+*.npy
+*/*.csv
